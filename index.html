@@ -31,6 +31,8 @@ textarea{width:100%;font:15px/1.45 Rubik,Arial,sans-serif;border:1.5px solid #b9
 .note{color:var(--muted);font-size:14.5px}
 .profile{display:flex;gap:10px;align-items:center;margin:8px 0} .profile img{width:64px;height:64px;border-radius:50%;border:1px solid #d5dee7}
 .profile .cover{width:150px;height:57px;border-radius:6px}
+.words{margin:0 0 10px} .words textarea{margin:4px 0}
+.hl{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 10px} .hl img{width:48px;height:48px;border-radius:50%;border:1px solid #d5dee7}
 </style></head><body>
 <div class="top"><img src="badge.png" alt=""><div><b>Your posts</b><span>Llanberis Bike Hire · Facebook and Instagram</span></div></div>
 <main>
@@ -42,6 +44,18 @@ textarea{width:100%;font:15px/1.45 Rubik,Arial,sans-serif;border:1.5px solid #b9
  <h3>First: your new profile picture and cover</h3>
  <div class="profile"><img src="profile.png" alt="Profile picture"><button class="btn line" data-file="profile.png">Save profile picture</button></div>
  <div class="profile"><img class="cover" src="facebook-cover.png" alt="Facebook cover"><button class="btn line" data-file="facebook-cover.png">Save Facebook cover</button></div>
+ <h3>Your profile words</h3>
+ <p class="note">Instagram: Edit profile › Bio. Facebook: your page › Edit details › Intro.</p>
+ <div class="words"><b>Instagram bio</b><textarea readonly rows="5">Family-run bike hire at the foot of Yr Wyddfa (Snowdon)
+Mountain bikes, e-bikes, children&#x27;s bikes and trailers
+Call or text 07776 051559</textarea><button class="btn line" data-copytext>Copy</button></div>
+ <div class="words"><b>Facebook intro</b><textarea readonly rows="4">Family-run bike hire in Llanberis, at the foot of Yr Wyddfa (Snowdon). Call or text 07776 051559.</textarea><button class="btn line" data-copytext>Copy</button></div>
+ <div class="words"><b>Website (for both)</b><textarea readonly rows="1">www.llanberisbikehire.co.uk</textarea><button class="btn line" data-copytext>Copy</button></div>
+ <p class="note">On Facebook, set the button to <b>Call now</b> for now. Tom will change it to <b>Book now</b> when online booking is live.</p>
+ <h3>Instagram highlight covers</h3>
+ <p class="note">For the circles under your bio. Name them: Bikes, Routes, Book, Reviews, Find us, Ask us.</p>
+ <div class="hl"><img src="highlight-1.png" alt="Bikes"><img src="highlight-2.png" alt="Routes"><img src="highlight-3.png" alt="Book"><img src="highlight-4.png" alt="Reviews"><img src="highlight-5.png" alt="Find us"><img src="highlight-6.png" alt="Ask us"></div>
+ <button class="btn line" data-files='["highlight-1.png", "highlight-2.png", "highlight-3.png", "highlight-4.png", "highlight-5.png", "highlight-6.png"]'>Save all six</button>
 </section>
 <h2 class="section">Post in this order</h2>
 
@@ -643,5 +657,10 @@ document.querySelectorAll('.post').forEach(post => {
     save(btn.dataset.save === 'story' ? story : feed); flash(btn, 'Saving');
   }));
 });
+document.querySelectorAll('[data-copytext]').forEach(btn => btn.addEventListener('click', async () => {
+  const t = btn.previousElementSibling;
+  try { await navigator.clipboard.writeText(t.value); flash(btn, 'Copied'); } catch (e) { t.focus(); t.select(); flash(btn, 'Press and hold to copy'); }
+}));
+document.querySelectorAll('[data-files]:not(.post)').forEach(btn => btn.addEventListener('click', () => { save(JSON.parse(btn.dataset.files)); flash(btn, 'Saving'); }));
 document.querySelectorAll('[data-file]').forEach(btn => btn.addEventListener('click', () => { save([btn.dataset.file]); flash(btn, 'Saving'); }));
 </script></body></html>
